@@ -1,0 +1,56 @@
+typedef struct tagRecordList {
+	int i;
+	RecordList* pNext;
+}RecordList;
+
+typedef struct tagRecordList {
+	unsigned int logNum;
+	RecordList* pNext;
+}RecordListHead;
+
+RecordListHead listHead = NULL;
+
+void enquene(RecordListHead* listHead, RecordList* recordNode)
+{
+	RecordList* pNext = listHead->pNext;
+	listHead->pNext = recordNode;
+	recordNode->pNext = pNext;
+	listHead->logNum++;
+	
+	return;
+}
+
+void dequeue(RecordListHead* listHead)
+{
+	RecordList* pNext = NULL;
+	RecordList* pPre = NULL;
+
+	if (0 == listHead->logNum)
+	{
+		return;
+	}
+
+	pNext = listHead->pNext;
+
+	if (1 == listHead->logNum)
+	{
+		listHead->pNext = NULL;
+		listHead->logNum--;
+		free(pNext);
+		pNext = NULL;
+		return;
+	}
+	
+	while (NULL != pNext->pNext)
+	{
+		pPre = pNext;
+		pNext = pNext->pNext;
+	}
+
+	pPre->pNext = NULL;
+	listHead->logNum--;
+	free(pNext);
+	pNext = NULL;
+
+	return;
+}
